@@ -1,0 +1,29 @@
+[
+{
+    "model": "vacantpie.annual_leave_category",
+    "pk": 1,
+    "fields": {
+        "name": "C1",
+        "description": "Beginner",
+        "max_annual_leave": 21
+    }
+},
+{
+    "model": "vacantpie.annual_leave_category",
+    "pk": 2,
+    "fields": {
+        "name": "C2",
+        "description": "Medium (after 3 years)",
+        "max_annual_leave": 23
+    }
+},
+{
+    "model": "vacantpie.annual_leave_category",
+    "pk": 3,
+    "fields": {
+        "name": "C3",
+        "description": "Old (after 10 years)",
+        "max_annual_leave": 27
+    }
+}
+]

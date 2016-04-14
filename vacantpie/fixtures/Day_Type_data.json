@@ -1,0 +1,42 @@
+[
+{
+    "model": "vacantpie.day_type",
+    "pk": 1,
+    "fields": {
+        "name": "Approved Annual Leave",
+        "description": "Approved Annual Leave"
+    }
+},
+{
+    "model": "vacantpie.day_type",
+    "pk": 2,
+    "fields": {
+        "name": "Sick Leave",
+        "description": "Sick Leave"
+    }
+},
+{
+    "model": "vacantpie.day_type",
+    "pk": 3,
+    "fields": {
+        "name": "Unpaid Leave",
+        "description": "Unpaid Leave"
+    }
+},
+{
+    "model": "vacantpie.day_type",
+    "pk": 4,
+    "fields": {
+        "name": "Asked Annual Leave",
+        "description": "Asked Annual Leave"
+    }
+},
+{
+    "model": "vacantpie.day_type",
+    "pk": 5,
+    "fields": {
+        "name": "Time in lieu",
+        "description": "Time in lieu"
+    }
+}
+]
