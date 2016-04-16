@@ -73,14 +73,23 @@ WSGI_APPLICATION = 'vacant.wsgi.application'
 
 
 # Database
-# https://docs.djangoproject.com/en/1.9/ref/settings/#databases
+# https://docs.djangoproject.co m/en/1.9/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+DATABASES = {}
+
+try:
+    from vacant.local_settings import *
+except:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.mysql',
+            'NAME': 'vacantpie',
+            'USER': 'oduma',
+            'PASSWORD': 'Daniel99',
+            'HOST': 'mysqlodatabase.cjd9q6u52jjc.eu-west-1.rds.amazonaws.com',
+            'PORT': '3306',
+        }
     }
-}
 
 
 # Password validation
