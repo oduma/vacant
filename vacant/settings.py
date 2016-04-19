@@ -59,7 +59,7 @@ ROOT_URLCONF = 'vacant.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, "vacant\\templates"),os.path.join(BASE_DIR, "vacantpie\\templates\\vacantpie")],
+        'DIRS': [os.path.join(BASE_DIR, "vacant/templates"),os.path.join(BASE_DIR, "vacantpie/templates/vacantpie")],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
