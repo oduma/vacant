@@ -5,10 +5,10 @@ from django.http import HttpResponse
 from django.utils.decorators import method_decorator
 from django.views.generic import TemplateView
 
-from vacantpie.services import get_free_days, get_own_days, get_reports_days, create_new_employee_event, \
+from vacantpie.services import create_new_employee_event, \
     cancel_employee_event, change_disabled, change_vacation_request, \
     get_vacation_details_for_user, change_status_vacation_request
-from .models import Employee_Event, Employee, Day_Type
+from .models import Employee_Event, Employee, Day_Type, Day
 
 
 @method_decorator(login_required, name='dispatch')
@@ -24,10 +24,10 @@ class CalendarView(TemplateView):
 
 @login_required
 def days(request):
-    events_list = get_free_days(request.GET['start'], request.GET['end'], '#ff0000')
-    events_list.extend(get_own_days(request.GET['start'], request.GET['end'], request.user.pk, '#00ff00',
+    events_list = Day.objects.get_free_days(request.GET['start'], request.GET['end'], '#ff0000')
+    events_list.extend(Employee_Event.objects.get_own_days(request.GET['start'], request.GET['end'], request.user.pk, '#00ff00',
                                     ["#ffffff", "#00ff00", "#ff0000"]))
-    events_list.extend(get_reports_days(request.GET['start'], request.GET['end'],
+    events_list.extend(Employee_Event.objects.get_reports_days(request.GET['start'], request.GET['end'],
                                         request.user.pk,
                                         ["#ffffff", "#00ff00", "#ff0000"], ["#00ffcc", "#9966ff", "#ff99cc"]))
     return HttpResponse(json.dumps(events_list))

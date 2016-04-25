@@ -1,39 +1,4 @@
-from django.db.models import Q
-
-from vacantpie.models import Day, Employee_Event, Employee, DepartmentEmployee
-
-
-def get_free_days(from_date, to_date, color):
-    return list(map(lambda x: x.get_event(color).__dict__,
-                    Day.objects.filter(day_date__range=[from_date, to_date], is_workday=False)))
-
-
-def get_own_days(from_date, to_date, user_id, color, status_color_range):
-    return list(map(
-        lambda x: x.get_event_as_own(color, status_color_range).__dict__,
-        Employee_Event.objects.filter(
-            Q(start_day__range=[from_date, to_date]) | Q(end_day__range=[from_date, to_date]),
-            employee__user__id=user_id)))
-
-
-def get_reports_days(from_date, to_date, user_id, status_color_range, reports_color_range):
-    reports_days = []
-    try:
-        queryset = Employee_Event.objects.get_reporting_employees_days(from_date, to_date, user_id)
-    except:
-        return reports_days
-    color_index = 0
-    current_employee_id = 0
-    for item in queryset:
-        if not current_employee_id == item.employee.pk:
-            color_index += 1
-            if color_index >= 2:
-                color_index = 0
-            current_employee_id = item.employee.pk
-        reports_days.append(item.get_event(reports_color_range[color_index], status_color_range).__dict__)
-
-    return reports_days
-
+from vacantpie.models import Employee_Event, Employee, DepartmentEmployee
 
 def create_new_employee_event(from_date, to_date, user_id, color, status_color_range):
     employee_event = Employee_Event.objects.create_employee_event(from_date, to_date, user_id)

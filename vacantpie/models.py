@@ -61,6 +61,12 @@ class Leave_Category(models.Model):
         verbose_name_plural = "Leave Categories"
 
 
+class DayManager(models.Manager):
+    def get_free_days(self, from_date, to_date, color):
+        return list(map(lambda x: x.get_event(color).__dict__,
+                        self.filter(day_date__range=[from_date, to_date], is_workday=False)))
+
+
 class Day(models.Model):
     is_workday = models.BooleanField()
     day_date = models.DateField()
@@ -69,6 +75,8 @@ class Day(models.Model):
         return Event(color=color,
                      title="non working day", start=format_date(self.day_date),
                      end=format_date(self.day_date), editable=False, startEditable=False)
+
+    objects=DayManager()
 
 
 class Day_Type(models.Model):
@@ -209,6 +217,31 @@ class Employee_Event_Manager(models.Manager):
     def check_event_for_user(self, event_id, user_id):
         return (self.filter(id=event_id, employee__user_id=user_id).aggregate(
             evs=Count('id'))['evs'] == 0)
+
+    def get_own_days(self, from_date, to_date, user_id, color, status_color_range):
+        return list(map(
+            lambda x: x.get_event_as_own(color, status_color_range).__dict__,
+            self.filter(
+                Q(start_day__range=[from_date, to_date]) | Q(end_day__range=[from_date, to_date]),
+                employee__user__id=user_id)))
+
+    def get_reports_days(self, from_date, to_date, user_id, status_color_range, reports_color_range):
+        reports_days = []
+        try:
+            queryset = self.get_reporting_employees_days(from_date, to_date, user_id)
+        except:
+            return reports_days
+        color_index = 0
+        current_employee_id = 0
+        for item in queryset:
+            if not current_employee_id == item.employee.pk:
+                color_index += 1
+                if color_index >= 2:
+                    color_index = 0
+                current_employee_id = item.employee.pk
+            reports_days.append(item.get_event(reports_color_range[color_index], status_color_range).__dict__)
+
+        return reports_days
 
 
 class Employee_Event(models.Model):
